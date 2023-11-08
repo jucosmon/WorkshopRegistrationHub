@@ -55,16 +55,28 @@ public class User {
         }  
         }  
 
-        public boolean checkCredentials(int id, String password){
+     /*    public boolean checkCredentials(int id, String password){
 
             boolean check = true;
             try{
                 Class.forName("com.mysql.cj.jdbc.Driver");  
         
                 Connection con=DriverManager.getConnection("jdbc:mysql://localhost/pfbaliwis","root","");  
-                Statement stmt=con.createStatement(); 
-                ResultSet rs = stmt.executeQuery("SELECT school_id, password FROM User");
-                while(rs.next()){
+                //Statement stmt=con.createStatement(); 
+                PreparedStatement pStatement = con.prepareStatement("SELECT school_id, password FROM User WHERE id == ? AND password == ?");
+                pStatement.setInt(1, id);
+                pStatement.setString(2, password);
+
+                ResultSet rs = pStatement.executeQuery();
+
+                if(rs.next() == true){
+                    System.out.println("Valid");
+                }
+                else{
+                    System.out.println("Invalid");
+                }
+
+                /*while(rs.next()){
                     if(rs.getInt("school_id") == id || rs.getString("password") == password){
                         check = true;
                     }
@@ -78,7 +90,7 @@ public class User {
         }  
 
         return check;
-    }
+    }*/
 
 }
 
