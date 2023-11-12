@@ -2,12 +2,12 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class Menu extends JFrame implements ActionListener{
-
+    protected String choice;
     JButton login, register;
 
 
-    Menu(){
-
+    Menu(String choice){
+        this.choice = choice;
         login = new JButton("Login");
         register = new JButton("Register");
 
@@ -34,12 +34,12 @@ public class Menu extends JFrame implements ActionListener{
         if(e.getSource()==register){
             System.out.println("Register");
             this.dispose();
-            new Register();
+            new Register(this.choice);
         }
         else if(e.getSource()==login){
             System.out.println("Login");
             this.dispose();
-            new Login();
+            new Login(this.choice);
         }
 
     }
