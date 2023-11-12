@@ -5,15 +5,16 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class Login extends JFrame implements ActionListener{
-    
+    protected String choice;
     JLabel school_id, password;
     JTextField t_school_id;
     JPasswordField t_password;
     JButton b_enter;
-    public Login(){
 
+    public Login(String choice){
+     this.choice = choice;
         
-     school_id = new JLabel("School ID:");
+     school_id = new JLabel("ID:");
      password = new JLabel("Password:");
      t_school_id = new JTextField();
      t_password = new JPasswordField();
@@ -61,7 +62,7 @@ public class Login extends JFrame implements ActionListener{
         
                 Connection con=DriverManager.getConnection("jdbc:mysql://localhost/pfbaliwis","root","");
                 
-                PreparedStatement pStatement = con.prepareStatement("SELECT school_id, password FROM User WHERE school_id = ? AND password = ?");
+                PreparedStatement pStatement = con.prepareStatement("SELECT id, password FROM User WHERE id = ? AND password = ?");
                 pStatement.setInt(1, id);
                 pStatement.setString(2, password);
 
@@ -74,22 +75,6 @@ public class Login extends JFrame implements ActionListener{
                     System.out.println("Invalid");
                 
 
-                /*Statement stmt=con.createStatement(); 
-                ResultSet rs = stmt.executeQuery("SELECT school_id, password FROM User");
-                while(rs.next()){
-                    int sql_id = rs.getInt("school_id");
-                    String sql_pass = String.valueOf(rs.getString("password"));
-
-                   if(sql_pass == password){
-                        System.out.println("Valid Credentials");
-                         System.out.println(id + " " + password);
-                        System.out.println(rs.getInt("school_id") + " " + rs.getString("password"));
-                    }
-                    else if(sql_pass != password){
-                        System.out.println("Invalid Credentials");
-                        System.out.println("User Input: " + " \n"  + "ID: " + id + " \n" + "Password: " + password);
-                        System.out.println("From SQL Database: " + " \n" + "ID: " +  rs.getInt("school_id") + " \n" + "Password: " + rs.getString("password"));
-            }*/
         }
     }
             catch(Exception e){ 
