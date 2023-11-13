@@ -7,7 +7,7 @@ import java.sql.*;
 public class Login extends JFrame implements ActionListener{
     protected String choice;
     JLabel school_id, password;
-    JTextField t_school_id;
+    JTextField t_id;
     JPasswordField t_password;
     JButton b_enter;
 
@@ -16,12 +16,12 @@ public class Login extends JFrame implements ActionListener{
         
      school_id = new JLabel("ID:");
      password = new JLabel("Password:");
-     t_school_id = new JTextField();
+     t_id = new JTextField();
      t_password = new JPasswordField();
      b_enter = new JButton("Enter");
     
      //textfield
-     t_school_id.setBounds(225, 150, 200, 30);
+     t_id.setBounds(225, 150, 200, 30);
      t_password.setBounds(225, 250, 200, 30);
 
      //label
@@ -42,7 +42,7 @@ public class Login extends JFrame implements ActionListener{
     this.setLayout(null);
 
     //add components
-    this.add(t_school_id);
+    this.add(t_id);
     this.add(school_id);
     this.add(t_password);
     this.add(password);
@@ -54,7 +54,7 @@ public class Login extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent ef) {
        if(ef.getSource()==b_enter){
 
-           int id = Integer.parseInt(t_school_id.getText());
+           int id = Integer.parseInt(t_id.getText());
            String password = String.valueOf(t_password.getPassword());
 
               try{
@@ -71,7 +71,7 @@ public class Login extends JFrame implements ActionListener{
                 if(rs.next() == true){
                     this.dispose();
                     System.out.println("Valid");
-                    new Homepage(this.choice);
+                    new Homepage(this.choice, id);
                 }
                 else{
                     System.out.println("Invalid");

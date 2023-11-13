@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 
 public class Homepage extends JFrame{
 
-    public Homepage(String choice){
+    public Homepage(String choice, int id){
         this.setLayout(null);
         this.setSize(600, 600);
         this.setVisible(true);
@@ -32,7 +32,7 @@ public class Homepage extends JFrame{
             createWorkshop.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent e){  
                         dispose();
-                        new CreateWorkshop();
+                        new CreateWorkshop(id);
 
                 }
 
@@ -82,7 +82,7 @@ public class Homepage extends JFrame{
             upcomingEvents.addActionListener(new ActionListener(){  
                 public void actionPerformed(ActionEvent e){  
                         dispose();
-                        new UpcomingEvents();
+                        new UpcomingEvents(id);
                 }  
                 });
 
