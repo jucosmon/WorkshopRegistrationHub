@@ -69,7 +69,9 @@ public class Login extends JFrame implements ActionListener{
                 ResultSet rs = pStatement.executeQuery();
 
                 if(rs.next() == true){
+                    this.dispose();
                     System.out.println("Valid");
+                    new Homepage(this.choice);
                 }
                 else{
                     System.out.println("Invalid");
