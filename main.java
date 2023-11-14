@@ -6,10 +6,10 @@ public class main {
   /*
    * Ug makakita kag String choice, ag purpose ana kay pang ilhan na each frame,
    * event manager ba ag gagamit or attendee during the session so ayaw e remove
-   */
-
-  /* !! IMPORTANT !! */
-  /*
+   * 
+   * 
+   * !! IMPORTANT !!
+   * 
    * 1. Palihog kog ayaw e change ag mga variable name nila kay it will lead to
    * backend changes which will produce more debugging
    * 2. INSERTING PAS MGA USER AG NAHUMAN with no validation yet

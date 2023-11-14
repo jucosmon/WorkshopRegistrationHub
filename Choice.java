@@ -63,7 +63,7 @@ public class Choice extends JFrame implements ActionListener {
 
         // frame design ug properties
         this.setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
-        this.setSize(600, 600);
+        // this.setSize(600, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocation(500, 300);
         this.setTitle("Role");
