@@ -50,10 +50,9 @@ public class User {
         this.email = email;
     }
 
-    public void databaseInsert(/*
-                                * String f_name, String l_name, int id, String password, String nickname,
-                                * String bdate, String gender
-                                */) {
+
+    public void databaseInsert(){
+
 
         System.out.println(this.gender);
         try {
