@@ -1,10 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+
 import java.awt.*;
 import javax.swing.border.EmptyBorder;
 
@@ -125,7 +122,7 @@ public class Homepage extends JFrame {
                 manageProfile.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         dispose();
-                        new ManageProfile();
+                        new ManageProfile(user);
                     }
                 });
 
@@ -159,7 +156,7 @@ public class Homepage extends JFrame {
                 manageProfile.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         dispose();
-                        new ManageProfile();
+                        new ManageProfile(user);
                     }
                 });
 

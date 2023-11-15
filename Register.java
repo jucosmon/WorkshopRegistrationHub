@@ -389,8 +389,7 @@ public class Register extends JFrame implements ActionListener {
                     new Register(choice);
                 }
             } else {
-                System.out.println("Password not match" + String.valueOf(pass1.getPassword())
-                        + String.valueOf(text_repass.getPassword()));
+                System.out.println("Password does not match");
                 this.dispose();
                 new Register(choice);
             }

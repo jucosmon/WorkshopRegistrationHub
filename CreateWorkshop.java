@@ -77,30 +77,30 @@ public class CreateWorkshop extends JFrame implements ActionListener {
 
         // label designs
         // title
-        title.setFont(new Font("Montserrat", Font.BOLD, 20));
+        title.setFont(new Font("Montserrat", Font.BOLD, 17));
         title.setForeground(new Color(214, 204, 153));
 
         // description
-        description.setFont(new Font("Montserrat", Font.BOLD, 20));
+        description.setFont(new Font("Montserrat", Font.BOLD, 17));
         description.setForeground(new Color(214, 204, 153));
 
         // venue
-        venue.setFont(new Font("Montserrat", Font.BOLD, 20));
+        venue.setFont(new Font("Montserrat", Font.BOLD, 17));
         venue.setForeground(new Color(214, 204, 153));
 
         // speakers
-        speakers.setFont(new Font("Montserrat", Font.BOLD, 20));
+        speakers.setFont(new Font("Montserrat", Font.BOLD, 17));
         speakers.setForeground(new Color(214, 204, 153));
 
         // host
-        host.setFont(new Font("Montserrat", Font.BOLD, 20));
+        host.setFont(new Font("Montserrat", Font.BOLD, 17));
         host.setForeground(new Color(214, 204, 153));
 
         // org
-        org.setFont(new Font("Montserrat", Font.BOLD, 20));
+        org.setFont(new Font("Montserrat", Font.BOLD, 17));
         org.setForeground(new Color(214, 204, 153));
         // date
-        date.setFont(new Font("Montserrat", Font.BOLD, 20));
+        date.setFont(new Font("Montserrat", Font.BOLD, 17));
         date.setForeground(new Color(214, 204, 153));
 
         // texfield design
