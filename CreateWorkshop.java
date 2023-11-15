@@ -1,19 +1,34 @@
 import javax.swing.*;
 import java.awt.event.*;
 import java.text.SimpleDateFormat;
-import java.awt.Font;
 
-public class CreateWorkshop extends JFrame implements ActionListener{
-            String email;
-            JTextField  text_title, text_description, text_venue, text_speakers, text_host, text_org;
-            JLabel ws_code, title, description, venue, speakers, host, org, date;
-            JButton submit, back;
-            JFormattedTextField event_date;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
+import javax.swing.border.EmptyBorder;
 
-    public CreateWorkshop(String email){
-        this.email = email;
+public class CreateWorkshop extends JFrame implements ActionListener {
+    String email, choice;
+    JTextField text_title, text_description, text_venue, text_speakers, text_host, text_org;
+    JLabel ws_code, title, description, venue, speakers, host, org, date;
+    JButton submit, backButton;
+    JFormattedTextField event_date;
+    User user;
+
+    public CreateWorkshop(User user) {
+        this.user = user;
+        this.email = user.getEmail();
+        this.choice = user.getChoice();
+        // images used
+        ImageIcon logo = new ImageIcon( // setting up image size
+                new ImageIcon("images/logo.png").getImage().getScaledInstance(65, 65, Image.SCALE_DEFAULT));
+        ;
+
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-       
+
         text_title = new JTextField();
         text_description = new JTextField();
         text_venue = new JTextField();
@@ -22,87 +37,256 @@ public class CreateWorkshop extends JFrame implements ActionListener{
         text_org = new JTextField();
         ws_code = new JLabel("Workshop Code");
         title = new JLabel("Workshop Title:");
-        description = new JLabel("Workshop Description:");
-        venue = new JLabel("Workshop Venue:");
-        speakers = new JLabel("Workshop Speakers");
-        host = new JLabel("Workshop Host:");
-        org = new JLabel("Workshop Org:");
-        submit = new JButton("Register");
-        back = new JButton("Back");
+        description = new JLabel("Description:");
+        venue = new JLabel("Venue:");
+        speakers = new JLabel("Speaker");
+        host = new JLabel("Host:");
+        org = new JLabel("Organization:");
+        submit = new JButton("Create");
         date = new JLabel("Event Date:");
         event_date = new JFormattedTextField(formatter);
 
-       
-        text_title.setBounds(211, 75, 200, 30);
-        text_description.setBounds(211, 125, 200, 30);
-        text_venue.setBounds(211, 175, 200, 30);
-        text_speakers.setBounds(211, 225, 200, 30);
-        text_host.setBounds(211, 275, 200, 30);
-        text_org.setBounds(211, 325, 200, 30);
-        event_date.setBounds(211, 375, 200, 30);
+        JLabel headingLabel = new JLabel("Create your new Event!");
+        headingLabel.setFont(new Font("Montserrat", Font.BOLD, 20));
+        headingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        headingLabel.setForeground(new Color(214, 204, 153));
+        headingLabel.setBorder(new EmptyBorder(20, 0, 10, 0)); // add padding or margin
 
+        JPanel inputPanel = new JPanel(new GridBagLayout());
+        inputPanel.setBorder(new EmptyBorder(20, 80, 80, 80)); // add padding or margin
+        inputPanel.setBackground(new Color(68, 93, 72));
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(10, 5, 10, 5); // add gaps
+        c.anchor = GridBagConstraints.WEST; // aligning it to the left side
 
-       
-        title.setBounds(80, 75, 150, 30);
-        title.setFont(new Font("Serif", Font.PLAIN, 20));
+        backButton = new JButton("Go Back");
+        backButton.addActionListener(this);
 
-        description.setBounds(80, 125, 150, 30);
-        description.setFont(new Font("Serif", Font.PLAIN, 20));
+        // back button design
+        backButton.setFocusable(false);
+        backButton.setFont(new Font("Montserrat", Font.BOLD, 15));
+        backButton.setForeground(new Color(68, 93, 72));
+        backButton.setBackground(new Color(214, 204, 153));
+        backButton.setPreferredSize(new Dimension(130, 30));
 
-        venue.setBounds(80, 175, 150, 30);
-        venue.setFont(new Font("Serif", Font.PLAIN, 20));
+        // panel for back button para d macenter
+        JPanel backBackPannel = new JPanel();
+        backBackPannel.setLayout(new FlowLayout(FlowLayout.LEADING));
+        backBackPannel.add(backButton);
+        backBackPannel.setBackground(new Color(68, 93, 72));
 
-        speakers.setBounds(80, 225, 200, 30);
-        speakers.setFont(new Font("Serif", Font.PLAIN, 20));
+        // label designs
+        // title
+        title.setFont(new Font("Montserrat", Font.BOLD, 20));
+        title.setForeground(new Color(214, 204, 153));
 
-        host.setBounds(80, 275, 200, 30);
-        host.setFont(new Font("Serif", Font.PLAIN, 20));
+        // description
+        description.setFont(new Font("Montserrat", Font.BOLD, 20));
+        description.setForeground(new Color(214, 204, 153));
 
-        org.setBounds(80, 325, 200, 30);
-        org.setFont(new Font("Serif", Font.PLAIN, 20));
+        // venue
+        venue.setFont(new Font("Montserrat", Font.BOLD, 20));
+        venue.setForeground(new Color(214, 204, 153));
 
-        date.setBounds(80, 375, 200, 30);
-        date.setFont(new Font("Serif", Font.PLAIN, 20));
-        
-        submit.setBounds(260, 425, 200, 30);
-        back.setBounds(0, 0, 200, 30);
+        // speakers
+        speakers.setFont(new Font("Montserrat", Font.BOLD, 20));
+        speakers.setForeground(new Color(214, 204, 153));
 
+        // host
+        host.setFont(new Font("Montserrat", Font.BOLD, 20));
+        host.setForeground(new Color(214, 204, 153));
+
+        // org
+        org.setFont(new Font("Montserrat", Font.BOLD, 20));
+        org.setForeground(new Color(214, 204, 153));
+        // date
+        date.setFont(new Font("Montserrat", Font.BOLD, 20));
+        date.setForeground(new Color(214, 204, 153));
+
+        // texfield design
+        // title
+        text_title.setPreferredSize(new Dimension(300, 30));
+        text_title.setForeground(new Color(68, 93, 72));
+        text_title.setBackground(new Color(214, 204, 153));
+        text_title.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        text_title.setFont(new Font("Montserrat", Font.BOLD, 13));
+
+        // description
+        text_description.setPreferredSize(new Dimension(300, 30));
+        text_description.setForeground(new Color(68, 93, 72));
+        text_description.setBackground(new Color(214, 204, 153));
+        text_description.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        text_description.setFont(new Font("Montserrat", Font.BOLD, 13));
+
+        // venue
+        text_venue.setPreferredSize(new Dimension(300, 30));
+        text_venue.setForeground(new Color(68, 93, 72));
+        text_venue.setBackground(new Color(214, 204, 153));
+        text_venue.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        text_venue.setFont(new Font("Montserrat", Font.BOLD, 13));
+
+        // speakers
+        text_speakers.setPreferredSize(new Dimension(300, 30));
+        text_speakers.setForeground(new Color(68, 93, 72));
+        text_speakers.setBackground(new Color(214, 204, 153));
+        text_speakers.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        text_speakers.setFont(new Font("Montserrat", Font.BOLD, 13));
+
+        // host
+        text_host.setPreferredSize(new Dimension(300, 30));
+        text_host.setForeground(new Color(68, 93, 72));
+        text_host.setBackground(new Color(214, 204, 153));
+        text_host.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        text_host.setFont(new Font("Montserrat", Font.BOLD, 13));
+
+        // org
+        text_org.setPreferredSize(new Dimension(300, 30));
+        text_org.setForeground(new Color(68, 93, 72));
+        text_org.setBackground(new Color(214, 204, 153));
+        text_org.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        text_org.setFont(new Font("Montserrat", Font.BOLD, 13));
+
+        // date
+        event_date.setPreferredSize(new Dimension(300, 30));
+        event_date.setForeground(new Color(68, 93, 72));
+        event_date.setBackground(new Color(214, 204, 153));
+        event_date.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        event_date.setFont(new Font("Montserrat", Font.BOLD, 13));
+
+        // submit design
+        submit.setFocusable(false);
+        submit.setFont(new Font("Montserrat", Font.BOLD, 18));
+        submit.setForeground(new Color(214, 204, 153));
+        submit.setBackground(new Color(0, 21, 36));
+        submit.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        submit.setPreferredSize(new Dimension(150, 35));
+        // submit action button
         submit.addActionListener(this);
 
-
-        this.setLayout(null);
-        this.setSize(600, 600);
-        this.setVisible(true);
+        // frame design and properties
+        this.setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
+        this.setSize(600, 800);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocation(500, 100);
+        this.setTitle("Create Worshop");
+        this.setIconImage(logo.getImage());
+        this.setResizable(false);
+        this.getContentPane().setBackground(new Color(68, 93, 72));
 
-        this.add(text_venue);
-        this.add(text_title);
-        this.add(text_speakers);
-        this.add(text_host);
-        this.add(text_description);
-        this.add(text_org);
-        this.add(submit);
-        this.add(event_date);
-        this.add(submit);
-        this.add(back);
-        this.add(date);
-        this.add(description);
-        this.add(title);
-        this.add(venue);
-        this.add(speakers);
-       
-        this.add(org);
-        this.add(host);
+        this.add(backBackPannel);
+        this.add(headingLabel);
+        this.add(inputPanel);
 
+        // adjusting layout and positioning
+        // title
+        c.gridy = 0;
+        c.gridx = 0;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.NONE;
+        inputPanel.add(title, c);
+        c.gridx = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        inputPanel.add(text_title, c);
+        // description
+        c.gridy = 1;
+        c.gridx = 0;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.NONE;
+        inputPanel.add(description, c);
+        c.gridy = 1;
+        c.gridx = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        inputPanel.add(text_description, c);
+        // venue
+        c.gridy = 2;
+        c.gridx = 0;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.NONE;
+        inputPanel.add(venue, c);
+        c.gridy = 2;
+        c.gridx = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        inputPanel.add(text_venue, c);
+        // speakers
+        c.gridy = 3;
+        c.gridx = 0;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.NONE;
+        inputPanel.add(speakers, c);
+        c.gridy = 3;
+        c.gridx = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        inputPanel.add(text_speakers, c);
+        // host
+        c.gridy = 4;
+        c.gridx = 0;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.NONE;
+        inputPanel.add(host, c);
+        c.gridy = 4;
+        c.gridx = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        inputPanel.add(text_host, c);
+        // org
+        c.gridy = 5;
+        c.gridx = 0;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.NONE;
+        inputPanel.add(org, c);
+        c.gridy = 5;
+        c.gridx = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        inputPanel.add(text_org, c);
+        // date
+        c.gridy = 6;
+        c.gridx = 0;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.NONE;
+        inputPanel.add(date, c);
+        c.gridy = 6;
+        c.gridx = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        inputPanel.add(event_date, c);
+
+        // submit button
+        c.gridy = 7;
+        c.gridwidth = 2;
+        c.anchor = GridBagConstraints.EAST;
+        c.fill = GridBagConstraints.NONE;
+        inputPanel.add(submit, c);
+
+        this.pack();
+        this.setVisible(true);
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    if(e.getSource()==submit){
-       WorkshopDb workshop = new WorkshopDb(email, text_title.getText(), text_description.getText(), event_date.getText(), text_venue.getText(), text_speakers.getText(), text_host.getText(), text_org.getText());
-       workshop.databaseInsert();
-    }
+        if (e.getSource() == submit) {
+            WorkshopDb workshop = new WorkshopDb(this.email, text_title.getText(), text_description.getText(),
+                    event_date.getText(), text_venue.getText(), text_speakers.getText(), text_host.getText(),
+                    text_org.getText());
+            Boolean validation = workshop.databaseInsert();
+            if (validation) {
+                System.out.println("Valid workshop info");
+                this.dispose();
+                new Homepage(this.user);
+            } else {
+                System.out.println("Invalid workshop info");
+                this.dispose();
+                new CreateWorkshop(this.user);
+            }
+        } else if (e.getSource() == backButton) {
+            System.out.println("Go Back");
+            this.dispose();
+            new Homepage(this.user);
+        }
     }
 
 }

@@ -13,10 +13,12 @@ public class Homepage extends JFrame {
     String email;
     String fname;
     String lname;
+    String choice;
 
-    public Homepage(String choice, User user) {
+    public Homepage(User user) {
         this.user = user;
         this.email = user.getEmail();
+        this.choice = user.getChoice();
 
         // components
         JButton createWorkshop = new JButton("Create Workshop");
@@ -97,86 +99,84 @@ public class Homepage extends JFrame {
         upcomingEvents.setPreferredSize(new Dimension(300, 30));
         upcomingEvents.setFocusable(false);
 
-        if (choice == "EventManager") {
+        exit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new Choice();
+            }
+        });
+        switch (this.choice) {
+            case "EventManager":
+                // Display choices for EventManager
+                createWorkshop.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        dispose();
+                        new CreateWorkshop(user);
+                    }
+                });
 
-            // action listener
-            createWorkshop.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    dispose();
-                    new CreateWorkshop(email);
-                }
-            });
+                manageWorkshop.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        dispose();
+                        new manageWorkshop(email);
+                    }
+                });
 
-            manageWorkshop.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    dispose();
-                    new manageWorkshop(email);
-                }
-            });
+                manageProfile.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        dispose();
+                        new ManageProfile();
+                    }
+                });
 
-            manageProfile.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    dispose();
-                    new ManageProfile();
-                }
-            });
+                constraints.gridy = 0;
+                constraints.gridx = 0;
+                buttonsPannel.add(createWorkshop, constraints);
+                constraints.gridy = 1;
+                constraints.gridx = 0;
+                buttonsPannel.add(manageWorkshop, constraints);
+                constraints.gridy = 2;
+                constraints.gridx = 0;
+                buttonsPannel.add(manageProfile, constraints);
+                break;
 
-            exit.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    dispose();
-                    new Choice();
-                }
-            });
-            constraints.gridy = 0;
-            constraints.gridx = 0;
-            buttonsPannel.add(createWorkshop, constraints);
-            constraints.gridy = 1;
-            constraints.gridx = 0;
-            buttonsPannel.add(manageWorkshop, constraints);
-            constraints.gridy = 2;
-            constraints.gridx = 0;
-            buttonsPannel.add(manageProfile, constraints);
+            case "Attendee":
+                // Display choices for Attendee
+                upcomingEvents.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        dispose();
+                        new UpcomingEvents(email);
+                    }
+                });
 
-        } else if (choice == "Attendee") {
+                registeredEvents.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        dispose();
+                        new RegisteredEvents();
+                    }
+                });
 
-            // action listener
-            upcomingEvents.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    dispose();
-                    new UpcomingEvents(email);
-                }
-            });
+                manageProfile.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        dispose();
+                        new ManageProfile();
+                    }
+                });
 
-            registeredEvents.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    dispose();
-                    new RegisteredEvents();
-                }
-            });
+                constraints.gridy = 0;
+                constraints.gridx = 0;
+                buttonsPannel.add(upcomingEvents, constraints);
+                constraints.gridy = 1;
+                constraints.gridx = 0;
+                buttonsPannel.add(registeredEvents, constraints);
+                constraints.gridy = 2;
+                constraints.gridx = 0;
+                buttonsPannel.add(manageProfile, constraints);
+                break;
 
-            manageProfile.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    dispose();
-                    new ManageProfile();
-                }
-            });
-
-            exit.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    dispose();
-                    new Choice();
-                }
-            });
-            constraints.gridy = 0;
-            constraints.gridx = 0;
-            buttonsPannel.add(upcomingEvents, constraints);
-            constraints.gridy = 1;
-            constraints.gridx = 0;
-            buttonsPannel.add(registeredEvents, constraints);
-            constraints.gridy = 2;
-            constraints.gridx = 0;
-            buttonsPannel.add(manageProfile, constraints);
-
+            default:
+                // Handle other values of this.choice
+                System.out.println(this.choice);
         }
 
         // frame design and properties

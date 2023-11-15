@@ -180,7 +180,7 @@ public class Login extends JFrame implements ActionListener {
                     this.user.setPassword(password);
                     this.dispose();
                     System.out.println("Valid");
-                    new Homepage(this.choice, user);
+                    new Homepage(user);
 
                 } else {
 

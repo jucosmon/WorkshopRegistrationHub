@@ -34,11 +34,11 @@ public class User {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public String getNickname() {
@@ -46,23 +46,23 @@ public class User {
     }
 
     public String getBirthDate() {
-        return b_date;
+        return this.b_date;
     }
 
     public String getProfession() {
-        return profession;
+        return this.profession;
     }
 
     public String getGender() {
-        return gender;
+        return this.gender;
     }
 
     public String getCountry() {
-        return country;
+        return this.country;
     }
 
     public String getChoice() {
-        return choice;
+        return this.choice;
     }
 
     public void setPassword(String password) {

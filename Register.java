@@ -3,6 +3,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.*;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -358,31 +359,41 @@ public class Register extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        char[] pass1Array = pass1.getPassword();
+        char[] repassArray = text_repass.getPassword();
+
         if (e.getSource() == submit) {
+            if (Arrays.equals(pass1Array, repassArray)) {
 
-            String s_gender = cb_gender.getSelectedItem().toString();
-            String s_prof = cb_prof.getSelectedItem().toString();
-            String email = text_email.getText();
-            String country = text_country.getText();
-            User user = new User(text_fname.getText(), text_lname.getText(), text_nickname.getText(), b_date.getText(),
-                    s_prof, s_gender, country, this.choice);
-            user.setPassword(new String(pass1.getPassword()));
-            user.setEmail(email);
-            System.out.println(
-                    "Hello " + user.first_name + " " + user.last_name + "\n" + /* user.getID()/ + */ "\n"
-                            + user.getPassword()
-                            + "\n" + user.b_date + "\n" + user.nickname + "\n" + s_gender + "\n" + country);
+                String s_gender = cb_gender.getSelectedItem().toString();
+                String s_prof = cb_prof.getSelectedItem().toString();
+                String email = text_email.getText();
+                String country = text_country.getText();
+                User user = new User(text_fname.getText(), text_lname.getText(), text_nickname.getText(),
+                        b_date.getText(),
+                        s_prof, s_gender, country, this.choice);
+                user.setPassword(new String(pass1.getPassword()));
+                user.setEmail(email);
+                System.out.println(
+                        "Hello " + user.first_name + " " + user.last_name + "\n" + /* user.getID()/ + */ "\n"
+                                + user.getPassword()
+                                + "\n" + user.b_date + "\n" + user.nickname + "\n" + s_gender + "\n" + country);
 
-            boolean validation = user.databaseInsert();
+                boolean validation = user.databaseInsert();
 
-            if (validation == true) {
-                this.dispose();
-                new Login(choice, user);
+                if (validation == true) {
+                    this.dispose();
+                    new Login(choice, user);
+                } else {
+                    this.dispose();
+                    new Register(choice);
+                }
             } else {
+                System.out.println("Password not match" + String.valueOf(pass1.getPassword())
+                        + String.valueOf(text_repass.getPassword()));
                 this.dispose();
                 new Register(choice);
             }
-
         } else if (e.getSource() == backButton) {
             this.dispose();
             new Menu(choice);
