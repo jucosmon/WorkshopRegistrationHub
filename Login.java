@@ -101,7 +101,7 @@ public class Login extends JFrame implements ActionListener {
         this.setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
         this.setSize(600, 800);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocation(500, 300);
+        this.setLocation(500, 200);
         this.setTitle("Log In");
         this.setIconImage(logo.getImage());
         this.setResizable(false);
