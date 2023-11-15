@@ -4,14 +4,14 @@ import java.text.SimpleDateFormat;
 import java.awt.Font;
 
 public class CreateWorkshop extends JFrame implements ActionListener{
-            int id;
+            String email;
             JTextField  text_title, text_description, text_venue, text_speakers, text_host, text_org;
             JLabel ws_code, title, description, venue, speakers, host, org, date;
             JButton submit, back;
             JFormattedTextField event_date;
 
-    public CreateWorkshop(int id){
-        this.id = id;
+    public CreateWorkshop(String email){
+        this.email = email;
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
        
         text_title = new JTextField();
@@ -100,7 +100,7 @@ public class CreateWorkshop extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
     if(e.getSource()==submit){
-       WorkshopDb workshop = new WorkshopDb(id, text_title.getText(), text_description.getText(), event_date.getText(), text_venue.getText(), text_speakers.getText(), text_host.getText(), text_org.getText());
+       WorkshopDb workshop = new WorkshopDb(email, text_title.getText(), text_description.getText(), event_date.getText(), text_venue.getText(), text_speakers.getText(), text_host.getText(), text_org.getText());
        workshop.databaseInsert();
     }
     }

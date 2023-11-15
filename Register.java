@@ -8,8 +8,8 @@ public class Register extends JFrame implements ActionListener {
     protected String choice;
 
     JFrame register = new JFrame();
-    JTextField text_fname, text_lname, text_id, text_email, text_nickname, text_country;
-    JLabel fname, lname, id, pass, repass, email, nickname, bdate, gender, country, profession;
+    JTextField text_fname, text_lname, /*text_id,*/ text_email, text_nickname, text_country;
+    JLabel fname, lname, /*id,*/ pass, repass, email, nickname, bdate, gender, country, profession;
     JButton submit, back;
     JPasswordField pass1, text_repass;
     JFormattedTextField b_date;
@@ -24,7 +24,7 @@ public class Register extends JFrame implements ActionListener {
         b_date = new JFormattedTextField(formatter);
         text_fname = new JTextField();
         text_lname = new JTextField();
-        text_id = new JTextField();
+       // text_id = new JTextField();
         text_email = new JTextField();
         text_nickname = new JTextField();
         text_country = new JTextField();
@@ -32,7 +32,7 @@ public class Register extends JFrame implements ActionListener {
         pass1 = new JPasswordField();
         fname = new JLabel("First Name: ");
         lname = new JLabel("Last Name: ");
-        id = new JLabel("ID NO: ");
+       // id = new JLabel("ID NO: ");
         pass = new JLabel("Password: ");
         repass = new JLabel("Re-Enter Password: ");
         email = new JLabel("Email:");
@@ -49,7 +49,7 @@ public class Register extends JFrame implements ActionListener {
         // setbounds
         text_fname.setBounds(211, 25, 200, 30);
         text_lname.setBounds(211, 75, 200, 30);
-        text_id.setBounds(211, 125, 200, 30);
+       // text_id.setBounds(211, 125, 200, 30);
         pass1.setBounds(211, 175, 200, 30);
         text_repass.setBounds(211, 225, 200, 30);
         text_email.setBounds(211, 275, 200, 30);
@@ -67,8 +67,8 @@ public class Register extends JFrame implements ActionListener {
         lname.setBounds(110, 75, 150, 30);
         lname.setFont(new Font("Serif", Font.PLAIN, 20));
 
-        id.setBounds(110, 125, 150, 30);
-        id.setFont(new Font("Serif", Font.PLAIN, 20));
+       // id.setBounds(110, 125, 150, 30);
+       // id.setFont(new Font("Serif", Font.PLAIN, 20));
 
         pass.setBounds(110, 175, 150, 30);
         pass.setFont(new Font("Serif", Font.PLAIN, 20));
@@ -110,13 +110,13 @@ public class Register extends JFrame implements ActionListener {
 
         this.add(text_fname);
         this.add(text_lname);
-        this.add(text_id);
+       // this.add(text_id);
         this.add(pass1);
         this.add(text_repass);
         this.add(submit);
         this.add(fname);
         this.add(lname);
-        this.add(id);
+       // this.add(id);
         this.add(pass);
         this.add(repass);
         this.add(back);
@@ -145,12 +145,12 @@ public class Register extends JFrame implements ActionListener {
             String country = text_country.getText();
             User user = new User(text_fname.getText(), text_lname.getText(), text_nickname.getText(), b_date.getText(),
                     s_prof, s_gender, country, this.choice);
-            int id = Integer.parseInt(text_id.getText());
+           // int id = Integer.parseInt(text_id.getText());
             user.setPassword(new String(pass1.getPassword()));
-            user.setID(id);
+           // user.setID(id);
             user.setEmail(email);
             System.out.println(
-                    "Hello " + user.first_name + " " + user.last_name + "\n" + user.getID() + "\n" + user.getPassword()
+                    "Hello " + user.first_name + " " + user.last_name + "\n" + /*user.getID()/ +*/ "\n" + user.getPassword()
                             + "\n" + user.b_date + "\n" + user.nickname + "\n" + s_gender + "\n" + country);
             user.databaseInsert();
 

@@ -2,7 +2,7 @@ import java.sql.*;
 
 public class WorkshopDb {
     //protected int workshop_code;
-    protected int manager_id;
+    protected String manager_email;
     protected String title;
     protected String description;
     protected String date;
@@ -11,9 +11,9 @@ public class WorkshopDb {
     protected String host;
     protected String org;
 
-    public WorkshopDb(/*int workshop_code,*/ int manager_id, String title, String description, String date, String venue, String speakers, String host, String org ){
+    public WorkshopDb(/*int workshop_code,*/ String manager_email, String title, String description, String date, String venue, String speakers, String host, String org ){
         //this.workshop_code = workshop_code;
-        this.manager_id = manager_id;
+        this.manager_email = manager_email;
         this.title = title;
         this.description = description;
         this.date = date;
@@ -32,13 +32,13 @@ public class WorkshopDb {
         Connection con=DriverManager.getConnection(  
         "jdbc:mysql://localhost/pfbaliwis","root","");  
         Statement stmt=con.createStatement();  
-         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Workshop(ws_code int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL, id int(11) DEFAULT NULL, title varchar(30) NOT NULL, description text(400), event_date date NOT NULL, venue varchar(50) NOT NULL, speakers varchar(100) NOT NULL, host varchar(30) NOT NULL, org varchar(100) NOT NULL, FOREIGN KEY(id) REFERENCES user(id))");
+         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Workshop(ws_code int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL, email varchar(30) NOT NULL, title varchar(30) NOT NULL, description text(400), event_date date NOT NULL, venue varchar(50) NOT NULL, speakers varchar(100) NOT NULL, host varchar(30) NOT NULL, org varchar(100) NOT NULL, FOREIGN KEY(email) REFERENCES user(email))");
          System.out.println("Created table in given database...");  
         
-         String sql = "INSERT INTO workshop(id, title, description, event_date, venue, speakers, host, org)" + "VALUES(?,?,?,?,?,?,?,?)";
+         String sql = "INSERT INTO workshop(email, title, description, event_date, venue, speakers, host, org)" + "VALUES(?,?,?,?,?,?,?,?)";
          PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         
-         pstmt.setInt(1, this.manager_id);
+         pstmt.setString(1, this.manager_email);
          pstmt.setString(2, this.title);
          pstmt.setString(3, this.description);
          pstmt.setString(4, this.date);

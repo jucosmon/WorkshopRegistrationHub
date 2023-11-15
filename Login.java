@@ -8,7 +8,7 @@ import javax.swing.border.EmptyBorder;
 public class Login extends JFrame implements ActionListener {
     protected String choice;
     JLabel school_id, password;
-    JTextField t_id;
+    JTextField t_email;
     JPasswordField t_password;
 
     JButton b_enter, backButton;
@@ -46,7 +46,7 @@ public class Login extends JFrame implements ActionListener {
         // adding labels, texfields and button
         school_id = new JLabel("Email:");
         password = new JLabel("Password:");
-        t_id = new JTextField();
+        t_email = new JTextField();
         t_password = new JPasswordField();
         b_enter = new JButton("Log In");
         b_enter.addActionListener(this);
@@ -79,10 +79,10 @@ public class Login extends JFrame implements ActionListener {
         // password.setBorder(new EmptyBorder(20, 0, 10, 0));
 
         // email textfield design
-        t_id.setPreferredSize(new Dimension(300, 30));
-        t_id.setForeground(new Color(68, 93, 72));
-        t_id.setBackground(new Color(214, 204, 153));
-        t_id.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        t_email.setPreferredSize(new Dimension(300, 30));
+        t_email.setForeground(new Color(68, 93, 72));
+        t_email.setBackground(new Color(214, 204, 153));
+        t_email.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         // password textfield design
         t_password.setPreferredSize(new Dimension(300, 30));
@@ -121,7 +121,7 @@ public class Login extends JFrame implements ActionListener {
         inputPanel.add(school_id, c);
         c.gridx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
-        inputPanel.add(t_school_id, c);
+        inputPanel.add(t_email, c);
         c.gridy = 1;
         c.gridx = 0;
         c.gridwidth = 1;
@@ -148,19 +148,19 @@ public class Login extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ef) {
         if (ef.getSource() == b_enter) {
 
-            int id = Integer.parseInt(t_school_id.getText());
+            String email = t_email.getText();
             String password = String.valueOf(t_password.getPassword());
 
 
             try {
-                Class.forName("com.mysql.jdbc.Driver");
+                Class.forName("com.mysql.cj.jdbc.Driver");
 
 
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost/pfbaliwis", "root", "");
 
                 PreparedStatement pStatement = con
-                        .prepareStatement("SELECT id, password FROM User WHERE id = ? AND password = ?");
-                pStatement.setInt(1, id);
+                        .prepareStatement("SELECT email, password FROM User WHERE email = ? AND password = ?");
+                pStatement.setString(1, email);
                 pStatement.setString(2, password);
 
                 ResultSet rs = pStatement.executeQuery();
@@ -170,7 +170,7 @@ public class Login extends JFrame implements ActionListener {
                 if(rs.next() == true){
                     this.dispose();
                     System.out.println("Valid");
-                    new Homepage(this.choice, id);
+                    new Homepage(this.choice, email);
                 }
                 else{
 

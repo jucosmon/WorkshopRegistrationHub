@@ -2,7 +2,7 @@ import javax.swing.*;
 
 public class UpcomingEvents extends JFrame{
 
-    public UpcomingEvents(int id){
+    public UpcomingEvents(String email){
         this.setLayout(null);
         this.setSize(600, 600);
         this.setVisible(true);
