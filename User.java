@@ -3,7 +3,6 @@ import java.sql.*;
 public class User {
     protected String first_name;
     protected String last_name;
-    private int id;
     private String password;
     private String email;
     protected String nickname;
@@ -26,10 +25,6 @@ public class User {
 
     }
 
-    /*public int getID() {
-        return id;
-    }?*/
-
     public String getPassword() {
         return password;
     }
@@ -37,10 +32,6 @@ public class User {
     public String getEmail() {
         return email;
     }
-
-   /* public void setID(int id) {
-        this.id = id;
-    }*/
 
     public void setPassword(String password) {
         this.password = password;
@@ -50,11 +41,15 @@ public class User {
         this.email = email;
     }
 
-
-    public void databaseInsert(){
-
+    public boolean databaseInsert() {
 
         System.out.println(this.gender);
+        // checking if the email format is correct
+        if (this.email.contains("@") == false && this.email.contains(".") == false) {
+            System.out.println("Incorrect Email Format");
+            return false;
+        }
+
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
@@ -78,13 +73,15 @@ public class User {
             pstmt.setString(8, this.profession);
             pstmt.setString(9, this.country);
             pstmt.setString(10, this.choice);
-            
+
             pstmt.executeUpdate();
             // System.out.println(id + f_name + l_name + password + nickname + bdate +
             // gender);
             con.close();
+            return true;
         } catch (Exception e) {
             System.out.println(e);
+            return false;
         }
     }
 

@@ -10,7 +10,6 @@ public class Login extends JFrame implements ActionListener {
     JLabel school_id, password;
     JTextField t_email;
     JPasswordField t_password;
-
     JButton b_enter, backButton;
 
     public Login(String choice) {
@@ -53,11 +52,10 @@ public class Login extends JFrame implements ActionListener {
         // back button
         backButton = new JButton("Go Back");
         backButton.addActionListener(this);
+
         // back button design
-        // backButton.setIcon(backButtonIcon);
         backButton.setFocusable(false);
         backButton.setFont(new Font("Montserrat", Font.BOLD, 15));
-        // backButton.setIconTextGap(10);
         backButton.setForeground(new Color(68, 93, 72));
         backButton.setBackground(new Color(214, 204, 153));
         backButton.setPreferredSize(new Dimension(130, 30));
@@ -83,12 +81,14 @@ public class Login extends JFrame implements ActionListener {
         t_email.setForeground(new Color(68, 93, 72));
         t_email.setBackground(new Color(214, 204, 153));
         t_email.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        t_email.setFont(new Font("Montserrat", Font.BOLD, 13));
 
         // password textfield design
         t_password.setPreferredSize(new Dimension(300, 30));
         t_password.setForeground(new Color(68, 93, 72));
         t_password.setBackground(new Color(214, 204, 153));
         t_password.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        t_password.setFont(new Font("Montserrat", Font.BOLD, 13));
 
         // log in or enter design
         b_enter.setFocusable(false);
@@ -109,6 +109,7 @@ public class Login extends JFrame implements ActionListener {
         this.getContentPane().setBackground(new Color(68, 93, 72));
 
         // add components
+
         this.add(backBackPannel);
         this.add(headingLabel);
         this.add(inputPanel);
@@ -141,7 +142,6 @@ public class Login extends JFrame implements ActionListener {
         this.pack();
         this.setVisible(true);
 
-
     }
 
     @Override
@@ -151,30 +151,30 @@ public class Login extends JFrame implements ActionListener {
             String email = t_email.getText();
             String password = String.valueOf(t_password.getPassword());
 
-
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-
 
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost/pfbaliwis", "root", "");
 
                 PreparedStatement pStatement = con
-                        .prepareStatement("SELECT email, password FROM User WHERE email = ? AND password = ?");
+                        .prepareStatement(
+                                "SELECT email, password, choice FROM User WHERE email = ? AND password = ? AND choice = ?");
                 pStatement.setString(1, email);
                 pStatement.setString(2, password);
+                pStatement.setString(3, choice);
 
                 ResultSet rs = pStatement.executeQuery();
 
-
-
-                if(rs.next() == true){
+                if (rs.next() == true) {
                     this.dispose();
                     System.out.println("Valid");
                     new Homepage(this.choice, email);
-                }
-                else{
+
+                } else {
 
                     System.out.println("Invalid");
+                    this.dispose();
+                    new Login(this.choice);
 
                 }
             } catch (Exception e) {
