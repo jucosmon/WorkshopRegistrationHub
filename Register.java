@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.*;
 import java.text.SimpleDateFormat;
@@ -194,9 +195,9 @@ public class Register extends JFrame implements ActionListener {
         cb_gender.setForeground(new Color(68, 93, 72));
         cb_gender.setBackground(new Color(214, 204, 153));
         cb_gender.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        cb_gender.getEditor().getEditorComponent().setFocusable(false); // Remove focusable behavior on the text
         cb_gender.getEditor().getEditorComponent().setBackground(new Color(214, 204, 153));
         cb_gender.getEditor().getEditorComponent().setForeground(new Color(68, 93, 72));
+        ((JComponent) cb_gender.getEditor().getEditorComponent()).setBorder(BorderFactory.createEmptyBorder());
 
         // profession
         cb_prof.setEditable(true);
@@ -207,6 +208,7 @@ public class Register extends JFrame implements ActionListener {
         cb_prof.getEditor().getEditorComponent().setFocusable(false); // Remove focusable behavior on the text
         cb_prof.getEditor().getEditorComponent().setBackground(new Color(214, 204, 153));
         cb_prof.getEditor().getEditorComponent().setForeground(new Color(68, 93, 72));
+        ((JComponent) cb_prof.getEditor().getEditorComponent()).setBorder(BorderFactory.createEmptyBorder());
 
         // submit design
         submit.setFocusable(false);
@@ -222,7 +224,7 @@ public class Register extends JFrame implements ActionListener {
         this.setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
         this.setSize(600, 800);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocation(200, 15);
+        this.setLocation(450, 15);
         this.setTitle("Register");
         this.setIconImage(logo.getImage());
         this.setResizable(false);
@@ -370,11 +372,12 @@ public class Register extends JFrame implements ActionListener {
                     "Hello " + user.first_name + " " + user.last_name + "\n" + /* user.getID()/ + */ "\n"
                             + user.getPassword()
                             + "\n" + user.b_date + "\n" + user.nickname + "\n" + s_gender + "\n" + country);
+
             boolean validation = user.databaseInsert();
 
             if (validation == true) {
                 this.dispose();
-                new Login(choice);
+                new Login(choice, user);
             } else {
                 this.dispose();
                 new Register(choice);

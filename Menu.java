@@ -37,7 +37,7 @@ public class Menu extends JFrame implements ActionListener {
         // back button
         backButton = new JButton("Go Back");
         backButton.addActionListener(this);
-        // back button desing
+        // back button design
         backButton.setIcon(backButtonIcon);
         backButton.setFocusable(false);
         backButton.setFont(new Font("Montserrat", Font.BOLD, 13));
@@ -122,7 +122,7 @@ public class Menu extends JFrame implements ActionListener {
         } else if (e.getSource() == login) {
             System.out.println("Login");
             this.dispose();
-            new Login(this.choice);
+            new Login(this.choice, null);
         } else if (e.getSource() == backButton) {
             System.out.println("Go Back");
             this.dispose();

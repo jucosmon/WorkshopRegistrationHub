@@ -25,12 +25,44 @@ public class User {
 
     }
 
+    public String getFirstName() {
+        return this.first_name;
+    }
+
+    public String getLastName() {
+        return this.last_name;
+    }
+
     public String getPassword() {
         return password;
     }
 
     public String getEmail() {
         return email;
+    }
+
+    public String getNickname() {
+        return this.nickname;
+    }
+
+    public String getBirthDate() {
+        return b_date;
+    }
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getChoice() {
+        return choice;
     }
 
     public void setPassword(String password) {

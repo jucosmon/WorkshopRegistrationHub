@@ -1,121 +1,199 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.awt.*;
+import javax.swing.border.EmptyBorder;
 
-public class Homepage extends JFrame{
+public class Homepage extends JFrame {
+    User user;
+    String email;
+    String fname;
+    String lname;
 
-    public Homepage(String choice, String email){
-        this.setLayout(null);
-        this.setSize(600, 600);
-        this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            JButton createWorkshop = new JButton("Create Workshop");
-            JButton manageWorkshop = new JButton("Manage Existing Workshop");
-            JButton manageProfile = new JButton("Manage Profile");
-            JButton upcomingEvents = new JButton("Upcoming Events");
-            JButton registeredEvents = new JButton("My Registered Events");
-            JButton exit = new JButton("Log out");
+    public Homepage(String choice, User user) {
+        this.user = user;
+        this.email = user.getEmail();
 
+        // components
+        JButton createWorkshop = new JButton("Create Workshop");
+        JButton manageWorkshop = new JButton("Manage Existing Workshop");
+        JButton manageProfile = new JButton("Manage Profile");
+        JButton upcomingEvents = new JButton("Upcoming Events");
+        JButton registeredEvents = new JButton("My Registered Events");
+        JButton exit = new JButton("Log out");
 
-        if(choice == "EventManager"){
-           /*  JButton createWorkshop = new JButton("Create Workshop");
-            JButton manageWorkshop = new JButton("Manage Existing Workshop");
-            JButton manageProfile = new JButton("Manage Profile");
-            JButton exit = new JButton("Exit");*/
+        // image used
+        ImageIcon logo = new ImageIcon( // setting up image size
+                new ImageIcon("images/logo.png").getImage().getScaledInstance(65, 65, Image.SCALE_DEFAULT));
+        ;
+        // back button
+        exit = new JButton("Log out");
+        // back button design
+        exit.setFocusable(false);
+        exit.setFont(new Font("Montserrat", Font.BOLD, 15));
+        exit.setForeground(new Color(68, 93, 72));
+        exit.setBackground(new Color(214, 204, 153));
+        exit.setPreferredSize(new Dimension(130, 30));
 
-            createWorkshop.setBounds(211,100,200,30); 
-            manageWorkshop.setBounds(211,150,200,30); 
-            manageProfile.setBounds(211,200,200,30); 
-            exit.setBounds(0, 0, 100,30);
+        // panel for back button para d macenter
+        JPanel exitPanel = new JPanel();
+        exitPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+        exitPanel.add(exit);
+        exitPanel.setBackground(new Color(68, 93, 72));
 
-            //action listener
-            createWorkshop.addActionListener(new ActionListener(){  
-                public void actionPerformed(ActionEvent e){  
-                        dispose();
-                        new CreateWorkshop(email);
+        // heading
+        JLabel headingLabel = new JLabel("Hello " + this.user.getNickname() + "!");
+        headingLabel.setFont(new Font("Montserrat", Font.BOLD, 20));
+        headingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        headingLabel.setForeground(new Color(214, 204, 153));
+        headingLabel.setBorder(new EmptyBorder(20, 0, 10, 0)); // add padding or margin
 
+        JPanel buttonsPannel = new JPanel(new GridBagLayout());
+        buttonsPannel.setBorder(new EmptyBorder(10, 150, 50, 150)); // add padding or margin
+        buttonsPannel.setBackground(new Color(68, 93, 72));
+
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(10, 5, 10, 5); // add gaps
+        constraints.anchor = GridBagConstraints.CENTER; // aligning it to the center
+
+        // buttons design
+        // creatworkshop design buttons
+        createWorkshop.setFont(new Font("Montserrat", Font.BOLD, 15));
+        createWorkshop.setForeground(new Color(68, 93, 72));
+        createWorkshop.setBackground(new Color(214, 204, 153));
+        createWorkshop.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        createWorkshop.setPreferredSize(new Dimension(300, 30));
+        createWorkshop.setFocusable(false);
+        // manage Workshop design buttons
+        manageWorkshop.setFont(new Font("Montserrat", Font.BOLD, 15));
+        manageWorkshop.setForeground(new Color(68, 93, 72));
+        manageWorkshop.setBackground(new Color(214, 204, 153));
+        manageWorkshop.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        manageWorkshop.setPreferredSize(new Dimension(300, 30));
+        manageWorkshop.setFocusable(false);
+        // manage profile design buttons
+        manageProfile.setFont(new Font("Montserrat", Font.BOLD, 15));
+        manageProfile.setForeground(new Color(68, 93, 72));
+        manageProfile.setBackground(new Color(214, 204, 153));
+        manageProfile.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        manageProfile.setPreferredSize(new Dimension(300, 30));
+        manageProfile.setFocusable(false);
+        // Registered events design buttons
+        registeredEvents.setFont(new Font("Montserrat", Font.BOLD, 15));
+        registeredEvents.setForeground(new Color(68, 93, 72));
+        registeredEvents.setBackground(new Color(214, 204, 153));
+        registeredEvents.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        registeredEvents.setPreferredSize(new Dimension(300, 30));
+        registeredEvents.setFocusable(false);
+        // manage Events design buttons
+        upcomingEvents.setFont(new Font("Montserrat", Font.BOLD, 15));
+        upcomingEvents.setForeground(new Color(68, 93, 72));
+        upcomingEvents.setBackground(new Color(214, 204, 153));
+        upcomingEvents.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        upcomingEvents.setPreferredSize(new Dimension(300, 30));
+        upcomingEvents.setFocusable(false);
+
+        if (choice == "EventManager") {
+
+            // action listener
+            createWorkshop.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                    new CreateWorkshop(email);
                 }
+            });
 
-                });
+            manageWorkshop.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                    new manageWorkshop(email);
+                }
+            });
 
-            manageWorkshop.addActionListener(new ActionListener(){  
-                public void actionPerformed(ActionEvent e){  
-                        dispose();
-                        new manageWorkshop(email);
-                }  
-                });
+            manageProfile.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                    new ManageProfile();
+                }
+            });
 
-            manageProfile.addActionListener(new ActionListener(){  
-                public void actionPerformed(ActionEvent e){  
-                        dispose();
-                        new ManageProfile();
-                }  
-                });
+            exit.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                    new Choice();
+                }
+            });
+            constraints.gridy = 0;
+            constraints.gridx = 0;
+            buttonsPannel.add(createWorkshop, constraints);
+            constraints.gridy = 1;
+            constraints.gridx = 0;
+            buttonsPannel.add(manageWorkshop, constraints);
+            constraints.gridy = 2;
+            constraints.gridx = 0;
+            buttonsPannel.add(manageProfile, constraints);
 
-            exit.addActionListener(new ActionListener(){  
-                public void actionPerformed(ActionEvent e){  
-                        dispose();
-                        new Choice();
-                }  
-                });
+        } else if (choice == "Attendee") {
 
+            // action listener
+            upcomingEvents.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                    new UpcomingEvents(email);
+                }
+            });
 
-            this.add(createWorkshop);
-            this.add(manageWorkshop);
-            this.add(manageProfile);
-            this.add(exit);
+            registeredEvents.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                    new RegisteredEvents();
+                }
+            });
 
+            manageProfile.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                    new ManageProfile();
+                }
+            });
 
-        }
-        else if(choice =="Attendee"){
-           /*  JButton upcomingEvents = new JButton("Upcoming Events");
-            JButton registeredEvents = new JButton("My Registered Events");
-            JButton manageProfile = new JButton("Manage Profile");
-            JButton exit = new JButton("Exit");*/
-
-            upcomingEvents.setBounds(211,100,200,30); 
-            registeredEvents.setBounds(211,150,200,30); 
-            manageProfile.setBounds(211,200,200,30); 
-            exit.setBounds(0, 0, 100,30);
-
-            //action listener
-            upcomingEvents.addActionListener(new ActionListener(){  
-                public void actionPerformed(ActionEvent e){  
-                        dispose();
-                        new UpcomingEvents(email);
-                }  
-                });
-
-            registeredEvents.addActionListener(new ActionListener(){  
-                public void actionPerformed(ActionEvent e){  
-                        dispose();
-                        new RegisteredEvents();
-                }  
-                });
-
-            manageProfile.addActionListener(new ActionListener(){  
-                public void actionPerformed(ActionEvent e){  
-                        dispose();
-                        new ManageProfile();
-                }  
-                });
-
-            exit.addActionListener(new ActionListener(){  
-                public void actionPerformed(ActionEvent e){  
-                        dispose();
-                        new Choice();
-                }  
-                });
-
-            this.add(upcomingEvents);
-            this.add(registeredEvents);
-            this.add(manageProfile);
-            this.add(exit);
+            exit.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    dispose();
+                    new Choice();
+                }
+            });
+            constraints.gridy = 0;
+            constraints.gridx = 0;
+            buttonsPannel.add(upcomingEvents, constraints);
+            constraints.gridy = 1;
+            constraints.gridx = 0;
+            buttonsPannel.add(registeredEvents, constraints);
+            constraints.gridy = 2;
+            constraints.gridx = 0;
+            buttonsPannel.add(manageProfile, constraints);
 
         }
+
+        // frame design and properties
+        this.setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocation(500, 200);
+        this.setTitle("Home Page");
+        this.setIconImage(logo.getImage());
+        this.setResizable(false);
+        this.getContentPane().setBackground(new Color(68, 93, 72));
+
+        this.add(exitPanel);
+        this.add(headingLabel);
+        this.add(buttonsPannel);
+
+        this.pack();
+        this.setVisible(true);
     }
 
-
- 
-    
 }
