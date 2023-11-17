@@ -94,7 +94,7 @@ public class workshopDetails extends JFrame implements ActionListener {
         backBackPannel.add(backButton);
         backBackPannel.setBackground(new Color(68, 93, 72));
         // heading
-        JLabel headingLabel = new JLabel("Worshop Details");
+        JLabel headingLabel = new JLabel("Workshop Event Details");
         headingLabel.setFont(new Font("Montserrat", Font.BOLD, 20));
         headingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         headingLabel.setForeground(new Color(214, 204, 153));
@@ -195,7 +195,7 @@ public class workshopDetails extends JFrame implements ActionListener {
                 new manageWorkshop(user);
                 System.out.println(user.getChoice());
             } else {
-                new UpcomingEvents(user);
+                new Homepage(user);
                 System.out.println(user.getChoice());
             }
 

@@ -120,7 +120,7 @@ public class manageWorkshop extends JFrame implements ActionListener {
         model.setColumnIdentifiers(columnNames);
         table = new JTable();
         table.setModel(model);
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         table.setFillsViewportHeight(true);
         // Disable column reordering
         table.getTableHeader().setReorderingAllowed(false);
