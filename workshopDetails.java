@@ -1,10 +1,11 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 import javax.swing.border.EmptyBorder;
+import java.util.Vector;
+import javax.swing.table.*;
 
 public class workshopDetails extends JFrame implements ActionListener {
     JButton backButton, editButton, deleteButton;
@@ -16,13 +17,20 @@ public class workshopDetails extends JFrame implements ActionListener {
     String ws_speaker;
     String ws_host;
     String ws_org;
+    JTable table;
+    String f_name, l_name;
+    JFrame attendeesTable;
 
     public workshopDetails(User user, int code) {
+
+        String[] columnNames = { "Email", "First Name", "Last Name", "Profession", "Gender", "Nickname" };
         this.user = user;
+
         // image used
         ImageIcon logo = new ImageIcon( // setting up image size
                 new ImageIcon("images/logo.png").getImage().getScaledInstance(65, 65, Image.SCALE_DEFAULT));
         ;
+
         // retrieving workshop details
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -152,15 +160,121 @@ public class workshopDetails extends JFrame implements ActionListener {
         orgLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
         orgLabel.setForeground(new Color(214, 204, 153));
 
-        // frame design and properties
-        this.setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocation(450, 50);
-        this.setTitle("Profile");
-        this.setIconImage(logo.getImage());
-        this.setResizable(false);
-        this.getContentPane().setBackground(new Color(68, 93, 72));
+        // table for displaying how many registrants in a specific event
+        if (user.getChoice().equals("EventManager")) {
+            // all about the table
+            JPanel tablePanel = new JPanel();
+            DefaultTableModel model = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false; // Make all cells uneditable
+                }
+            };
 
+            model.setColumnIdentifiers(columnNames);
+            table = new JTable();
+            table.setModel(model);
+            table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+            table.setFillsViewportHeight(true);
+            table.setPreferredSize(new Dimension(500, 200));
+            // Disable column reordering
+            table.getTableHeader().setReorderingAllowed(false);
+
+            // Disable row reordering
+            table.getTableHeader().setResizingAllowed(false);
+
+            JScrollPane scroll = new JScrollPane(table);
+            scroll.setHorizontalScrollBarPolicy(
+                    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            scroll.setVerticalScrollBarPolicy(
+                    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost/pfbaliwis", "root", "");
+                PreparedStatement pst = con.prepareStatement(
+                        "SELECT registration.reg_code, registration.email, registration.ws_code, user.f_name, user.l_name, user.profession, user.gender, user.nickname FROM registration INNER JOIN workshop ON workshop.ws_code = registration.ws_code INNER JOIN user ON user.email = registration.email WHERE workshop.email = ? AND workshop.ws_code = ? ");
+                pst.setString(1, user.getEmail());
+                pst.setInt(2, code);
+                ResultSet rs = pst.executeQuery();
+                int i = 0;
+
+                int reg_code;
+                int ws_code;
+                String email = "";
+                String f_name = "";
+                String l_name = "";
+                String profession = "";
+                String gender = "";
+                String nickname = "";
+                while (rs.next()) {
+                    reg_code = rs.getInt("reg_code");
+                    ws_code = rs.getInt("ws_code");
+                    email = rs.getString("email");
+                    f_name = rs.getString("f_name");
+                    l_name = rs.getString("l_name");
+                    profession = rs.getString("profession");
+                    gender = rs.getString("gender");
+                    nickname = rs.getString("nickname");
+
+                    model.addRow(new Object[] { email, f_name, l_name, profession, gender, nickname });
+                    i++;
+                }
+                if (i < 1) {
+                    JOptionPane.showMessageDialog(null, "No attendees yet", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+
+                }
+                if (i == 1) {
+                    System.out.println(i + " Record Found");
+
+                } else {
+                    System.out.println(i + " Records Found");
+                }
+            } catch (Exception e) {
+
+            }
+
+            tablePanel.add(scroll);
+            tablePanel.setVisible(true);
+            tablePanel.setSize(700, 200);
+            tablePanel.setBorder(new EmptyBorder(10, 30, 30, 30)); // add padding or margin
+            tablePanel.setBackground(new Color(68, 93, 72));
+            tablePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost/pfbaliwis", "root", "");
+
+                PreparedStatement pStatement = con.prepareStatement(
+                        "SELECT registration.email, user.f_name, user.l_name FROM registration INNER JOIN workshop ON workshop.ws_code = registration.ws_code INNER JOIN user ON user.email = registration.email WHERE workshop.email = ? AND workshop.ws_code = ?;");
+                pStatement.setString(1, user.getEmail());
+                pStatement.setInt(2, code);
+                ResultSet rs = pStatement.executeQuery();
+
+                Vector v = new Vector<>();
+                while (rs.next()) {
+                    code = rs.getInt(1);
+                    f_name = rs.getString(2);
+                    l_name = rs.getString(3);
+                    v.add(code);
+
+                }
+                con.close();
+
+            } catch (Exception e) {
+
+            }
+            attendeesTable = new JFrame();
+            attendeesTable.setLocation(820, 50);
+            attendeesTable.add(tablePanel);
+            attendeesTable.setSize(new Dimension(500, 500));
+            attendeesTable.setTitle("List of Attendees");
+            attendeesTable.setIconImage(logo.getImage());
+            attendeesTable.setVisible(true);
+
+        } // end of table
+
+        // adding components
         this.add(backBackPannel);
         this.add(headingLabel);
         this.add(titleLable);
@@ -182,6 +296,15 @@ public class workshopDetails extends JFrame implements ActionListener {
         panel.add(orgLabel, c);
         this.add(panel);
 
+        // frame design and properties
+        this.setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocation(200, 50);
+        this.setTitle("Profile");
+        this.setIconImage(logo.getImage());
+        this.setResizable(false);
+        this.getContentPane().setBackground(new Color(68, 93, 72));
+
         this.pack();
         this.setVisible(true);
     }
@@ -190,7 +313,9 @@ public class workshopDetails extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backButton) {
             System.out.println("Go Back");
+
             this.dispose();
+            attendeesTable.dispose();
             if (user.getChoice().equals("EventManager")) {
                 new manageWorkshop(user);
                 System.out.println(user.getChoice());
