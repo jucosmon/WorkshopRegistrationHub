@@ -115,7 +115,7 @@ public class Homepage extends JFrame {
                 manageWorkshop.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         dispose();
-                        new manageWorkshop(email);
+                        new manageWorkshop(user);
                     }
                 });
 
