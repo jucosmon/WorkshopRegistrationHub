@@ -257,7 +257,7 @@ public class UpcomingEvents extends JFrame implements ActionListener {
                                 System.out.println("VALUES INSERTED");
                                 JOptionPane.showMessageDialog(null, "Registered Successfully");
                                 dispose();
-                                new Homepage(user);
+                                new RegisteredEvents(user);
                             } else { // If duplicate record found
                                 JOptionPane.showMessageDialog(null, "You have already registered for this workshop.",
                                         "Registration Error", JOptionPane.ERROR_MESSAGE);

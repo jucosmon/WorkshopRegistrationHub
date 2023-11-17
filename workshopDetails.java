@@ -29,7 +29,7 @@ public class workshopDetails extends JFrame implements ActionListener {
             Connection connection = DriverManager
                     .getConnection("jdbc:mysql://localhost/pfbaliwis", "root", "");
 
-            if (user.getChoice() == "EventManager") {
+            if (user.getChoice().equals("EventManager")) {
                 PreparedStatement statement = connection
                         .prepareStatement("SELECT * FROM workshop WHERE email = ? AND ws_code = ?");
                 statement.setString(1, user.getEmail());
@@ -191,11 +191,14 @@ public class workshopDetails extends JFrame implements ActionListener {
         if (e.getSource() == backButton) {
             System.out.println("Go Back");
             this.dispose();
-            if (this.user.getChoice() == "EventManager") {
-                new manageWorkshop(this.user);
+            if (user.getChoice().equals("EventManager")) {
+                new manageWorkshop(user);
+                System.out.println(user.getChoice());
             } else {
-                new UpcomingEvents(this.user);
+                new UpcomingEvents(user);
+                System.out.println(user.getChoice());
             }
+
         }
 
     }
