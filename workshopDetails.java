@@ -29,26 +29,48 @@ public class workshopDetails extends JFrame implements ActionListener {
             Connection connection = DriverManager
                     .getConnection("jdbc:mysql://localhost/pfbaliwis", "root", "");
 
-            PreparedStatement statement = connection
-                    .prepareStatement("SELECT * FROM workshop WHERE email = ? AND ws_code = ?");
-            statement.setString(1, user.getEmail());
-            statement.setInt(2, code);
-            ResultSet resultSet = statement.executeQuery();
-            // Process the retrieved data
-            if (resultSet.next()) {
-                // Retrieve the values from the result set
-                ws_title = resultSet.getString("title");
-                ws_desc = resultSet.getString("description");
-                ws_date = resultSet.getString("event_date");
-                ws_venue = resultSet.getString("venue");
-                ws_speaker = resultSet.getString("speakers");
-                ws_host = resultSet.getString("host");
-                ws_org = resultSet.getString("org");
+            if (user.getChoice() == "EventManager") {
+                PreparedStatement statement = connection
+                        .prepareStatement("SELECT * FROM workshop WHERE email = ? AND ws_code = ?");
+                statement.setString(1, user.getEmail());
+                statement.setInt(2, code);
+                ResultSet resultSet = statement.executeQuery();
+                // Process the retrieved data
+                if (resultSet.next()) {
+                    // Retrieve the values from the result set
+                    ws_title = resultSet.getString("title");
+                    ws_desc = resultSet.getString("description");
+                    ws_date = resultSet.getString("event_date");
+                    ws_venue = resultSet.getString("venue");
+                    ws_speaker = resultSet.getString("speakers");
+                    ws_host = resultSet.getString("host");
+                    ws_org = resultSet.getString("org");
 
+                }
+                resultSet.close();
+                statement.close();
+            } else {
+                PreparedStatement statement = connection
+                        .prepareStatement("SELECT * FROM workshop WHERE ws_code = ?");
+                statement.setInt(1, code);
+                ResultSet resultSet = statement.executeQuery();
+                // Process the retrieved data
+                if (resultSet.next()) {
+                    // Retrieve the values from the result set
+                    ws_title = resultSet.getString("title");
+                    ws_desc = resultSet.getString("description");
+                    ws_date = resultSet.getString("event_date");
+                    ws_venue = resultSet.getString("venue");
+                    ws_speaker = resultSet.getString("speakers");
+                    ws_host = resultSet.getString("host");
+                    ws_org = resultSet.getString("org");
+
+                }
+                resultSet.close();
+                statement.close();
             }
             // Close the resources
-            resultSet.close();
-            statement.close();
+
             connection.close();
 
         } catch (Exception e) {
@@ -169,7 +191,11 @@ public class workshopDetails extends JFrame implements ActionListener {
         if (e.getSource() == backButton) {
             System.out.println("Go Back");
             this.dispose();
-            new manageWorkshop(this.user);
+            if (this.user.getChoice() == "EventManager") {
+                new manageWorkshop(this.user);
+            } else {
+                new Homepage(this.user);
+            }
         }
 
     }

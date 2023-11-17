@@ -142,14 +142,14 @@ public class Homepage extends JFrame {
                 upcomingEvents.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         dispose();
-                        new UpcomingEvents(email);
+                        new UpcomingEvents(user);
                     }
                 });
 
                 registeredEvents.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         dispose();
-                        new RegisteredEvents();
+                        new RegisteredEvents(user);
                     }
                 });
 
