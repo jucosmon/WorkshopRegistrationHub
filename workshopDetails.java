@@ -194,7 +194,7 @@ public class workshopDetails extends JFrame implements ActionListener {
             if (this.user.getChoice() == "EventManager") {
                 new manageWorkshop(this.user);
             } else {
-                new Homepage(this.user);
+                new UpcomingEvents(this.user);
             }
         }
 

@@ -205,6 +205,77 @@ public class UpcomingEvents extends JFrame implements ActionListener {
 
             }
         });
+        register.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ef) {
+
+                register.setEnabled(false);
+                viewButton.setEnabled(false);
+                // label select wscode positioning
+                c.gridy = 0;
+                c.gridx = 0;
+                c.gridwidth = 1;
+                c.fill = GridBagConstraints.NONE;
+                selectPanel.add(l_selectWs, c);
+                // combobox select ws positioning
+                c.gridx = 1;
+                c.fill = GridBagConstraints.HORIZONTAL;
+                selectPanel.add(selectWs, c);
+                // okay button
+                c.gridx = 2;
+                c.gridwidth = 1;
+                c.fill = GridBagConstraints.NONE;
+                selectPanel.add(okay, c);
+                selectPanel.revalidate();
+                selectPanel.repaint();
+
+                okay.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent ef) {
+                        int id = (int) selectWs.getSelectedItem();
+                        try {
+                            Class.forName("com.mysql.cj.jdbc.Driver");
+
+                            Connection con = DriverManager.getConnection(
+                                    "jdbc:mysql://localhost/pfbaliwis", "root", "");
+                            Statement stmt = con.createStatement();
+                            stmt.executeUpdate(
+                                    "CREATE TABLE IF NOT EXISTS registration(reg_code int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL, ws_code int(11) NOT NULL, email varchar(30) NOT NULL, FOREIGN KEY(email) REFERENCES user(email) ON DELETE CASCADE , FOREIGN KEY(ws_code) REFERENCES workshop(ws_code) ON DELETE CASCADE);");
+                            System.out.println("Created table in given database...");
+
+                            // Check if ws_code and email combination already exists
+                            String checkDuplicateQuery = "SELECT * FROM registration WHERE ws_code = ? AND email = ?";
+                            PreparedStatement checkDuplicateStmt = con.prepareStatement(checkDuplicateQuery);
+                            checkDuplicateStmt.setInt(1, id);
+                            checkDuplicateStmt.setString(2, email);
+                            ResultSet duplicateResult = checkDuplicateStmt.executeQuery();
+
+                            if (!duplicateResult.next()) { // If no duplicate code
+                                String sql = "INSERT INTO registration(ws_code, email)" + "VALUES(?,?)";
+                                PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                                pstmt.setInt(1, id);
+                                pstmt.setString(2, email);
+                                pstmt.executeUpdate();
+                                System.out.println("VALUES INSERTED");
+                                JOptionPane.showMessageDialog(null, "Registered Successfully");
+                                dispose();
+                                new Homepage(user);
+                            } else { // If duplicate record found
+                                JOptionPane.showMessageDialog(null, "You have already registered for this workshop.",
+                                        "Registration Error", JOptionPane.ERROR_MESSAGE);
+                                dispose();
+                                new UpcomingEvents(user);
+                            }
+
+                            con.close();
+                        } catch (Exception e) {
+                            System.out.println(e);
+                            dispose();
+                            new UpcomingEvents(user);
+                        }
+                    }
+                });
+
+            }
+        });
         // frame design ug properties
         this.setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
