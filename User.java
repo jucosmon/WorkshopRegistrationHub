@@ -73,6 +73,34 @@ public class User {
         this.email = email;
     }
 
+    public void setFirstName(String first_name) {
+        this.first_name = first_name;
+    }
+
+    public void setLastName(String last_name) {
+        this.last_name = last_name;
+    }
+
+    public void setNickName(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setBirthdate(String b_date) {
+        this.b_date = b_date;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     public boolean databaseInsert() {
 
         System.out.println(this.gender);

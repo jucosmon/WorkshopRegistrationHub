@@ -1,13 +1,10 @@
 import javax.swing.*;
 import java.sql.*;
 import java.util.Vector;
-
 import javax.swing.table.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.*;
-import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public class manageWorkshop extends JFrame implements ActionListener {
@@ -68,15 +65,69 @@ public class manageWorkshop extends JFrame implements ActionListener {
         backBackPannel.setLayout(new FlowLayout(FlowLayout.LEADING));
         backBackPannel.add(backButton);
         backBackPannel.setBackground(new Color(68, 93, 72));
+        // edit button design
+        edit.setFocusable(false);
+        edit.setFont(new Font("Montserrat", Font.BOLD, 15));
+        edit.setForeground(new Color(68, 93, 72));
+        edit.setBackground(new Color(214, 204, 153));
+        edit.setPreferredSize(new Dimension(130, 30));
+        // delete button design
+        delete.setFocusable(false);
+        delete.setFont(new Font("Montserrat", Font.BOLD, 15));
+        delete.setForeground(new Color(68, 93, 72));
+        delete.setBackground(new Color(214, 204, 153));
+        delete.setPreferredSize(new Dimension(130, 30));
+        // view button design
+        viewButton.setFocusable(false);
+        viewButton.setFont(new Font("Montserrat", Font.BOLD, 15));
+        viewButton.setForeground(new Color(68, 93, 72));
+        viewButton.setBackground(new Color(214, 204, 153));
+        viewButton.setPreferredSize(new Dimension(130, 30));
+        // okay 1 button design
+        okay.setFont(new Font("Montserrat", Font.BOLD, 15));
+        okay.setForeground(new Color(214, 204, 153));
+        okay.setBackground(new Color(0, 21, 36));
+        okay.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        okay.setPreferredSize(new Dimension(100, 30));
+        // okay 2 button design
+        okay1.setFont(new Font("Montserrat", Font.BOLD, 15));
+        okay1.setForeground(new Color(214, 204, 153));
+        okay1.setBackground(new Color(0, 21, 36));
+        okay1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        okay1.setPreferredSize(new Dimension(100, 30));
+        // confirmg button design
+        okay2.setFont(new Font("Montserrat", Font.BOLD, 15));
+        okay2.setForeground(new Color(214, 204, 153));
+        okay2.setBackground(new Color(0, 21, 36));
+        okay2.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        okay2.setPreferredSize(new Dimension(100, 30));
+        // confirmg button design
+        delete_okay.setFont(new Font("Montserrat", Font.BOLD, 15));
+        delete_okay.setForeground(new Color(214, 204, 153));
+        delete_okay.setBackground(new Color(0, 21, 36));
+        delete_okay.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        delete_okay.setPreferredSize(new Dimension(100, 30));
 
         // all about the table
         JPanel tablePanel = new JPanel();
-        DefaultTableModel model = new DefaultTableModel();
+        DefaultTableModel model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Make all cells uneditable
+            }
+        };
+
         model.setColumnIdentifiers(columnNames);
         table = new JTable();
         table.setModel(model);
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         table.setFillsViewportHeight(true);
+        // Disable column reordering
+        table.getTableHeader().setReorderingAllowed(false);
+
+        // Disable row reordering
+        table.getTableHeader().setResizingAllowed(false);
+
         JScrollPane scroll = new JScrollPane(table);
         scroll.setHorizontalScrollBarPolicy(
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -160,9 +211,10 @@ public class manageWorkshop extends JFrame implements ActionListener {
         edit.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent ef) {
-                // disabling EDIT AND delete button para d mag override kay mana man ug pili
+                // disabling previous buttons kay nakaclick naman
                 edit.setEnabled(false);
                 delete.setEnabled(false);
+                viewButton.setEnabled(false);
                 // label select wscode positioning
                 c.gridy = 0;
                 c.gridx = 0;
@@ -350,6 +402,7 @@ public class manageWorkshop extends JFrame implements ActionListener {
                 // disabling EDIT AND delete button para d mag override kay mana man ug pili
                 edit.setEnabled(false);
                 delete.setEnabled(false);
+                viewButton.setEnabled(false);
                 // label select wscode positioning
                 c.gridy = 0;
                 c.gridx = 0;
@@ -386,6 +439,42 @@ public class manageWorkshop extends JFrame implements ActionListener {
                             dispose();
                             new manageWorkshop(user);
                         }
+                    }
+                });
+
+            }
+        });
+        // if delete button is selected
+        viewButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ef) {
+
+                // disabling EDIT AND delete button para d mag override kay mana man ug pili
+                edit.setEnabled(false);
+                delete.setEnabled(false);
+                viewButton.setEnabled(false);
+                // label select wscode positioning
+                c.gridy = 0;
+                c.gridx = 0;
+                c.gridwidth = 1;
+                c.fill = GridBagConstraints.NONE;
+                selectPanel.add(l_selectWs, c);
+                // combobox select ws positioning
+                c.gridx = 1;
+                c.fill = GridBagConstraints.HORIZONTAL;
+                selectPanel.add(selectWs, c);
+                // okay button
+                c.gridx = 2;
+                c.gridwidth = 1;
+                c.fill = GridBagConstraints.NONE;
+                selectPanel.add(okay, c);
+                selectPanel.revalidate();
+                selectPanel.repaint();
+
+                okay.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent ef) {
+                        int id = (int) selectWs.getSelectedItem();
+                        dispose();
+                        new workshopDetails(user, id);
                     }
                 });
 

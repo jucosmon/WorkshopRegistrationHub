@@ -1,7 +1,7 @@
 import java.sql.*;
 
 public class WorkshopDb {
-    // protected int workshop_code;
+    protected int workshop_code;
     protected String manager_email;
     protected String title;
     protected String description;
@@ -23,6 +23,10 @@ public class WorkshopDb {
         this.org = org;
     }
 
+    public void setCode(int code) {
+        this.workshop_code = code;
+    }
+
     public boolean databaseInsert() {
 
         try {
@@ -32,7 +36,7 @@ public class WorkshopDb {
                     "jdbc:mysql://localhost/pfbaliwis", "root", "");
             Statement stmt = con.createStatement();
             stmt.executeUpdate(
-                    "CREATE TABLE IF NOT EXISTS Workshop(ws_code int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL, email varchar(30) NOT NULL, title varchar(30) NOT NULL, description text(400), event_date date NOT NULL, venue varchar(50) NOT NULL, speakers varchar(100) NOT NULL, host varchar(30) NOT NULL, org varchar(100) NOT NULL, FOREIGN KEY(email) REFERENCES user(email))");
+                    "CREATE TABLE IF NOT EXISTS Workshop(ws_code int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL, email varchar(30) NOT NULL, title varchar(30) NOT NULL, description text(400), event_date date NOT NULL, venue varchar(50) NOT NULL, speakers varchar(100) NOT NULL, host varchar(30) NOT NULL, org varchar(100) NOT NULL, FOREIGN KEY(email) REFERENCES user(email) ON DELETE CASCADE )");
             System.out.println("Created table in given database...");
 
             String sql = "INSERT INTO workshop(email, title, description, event_date, venue, speakers, host, org)"
