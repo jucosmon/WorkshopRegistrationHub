@@ -274,10 +274,13 @@ public class CreateWorkshop extends JFrame implements ActionListener {
                     text_org.getText());
             Boolean validation = workshop.databaseInsert();
             if (validation) {
+                JOptionPane.showMessageDialog(null, "New workshop created");
                 System.out.println("Valid workshop info");
                 this.dispose();
-                new Homepage(this.user);
+                new manageWorkshop(this.user);
             } else {
+                JOptionPane.showMessageDialog(null, "Invalid workshop info",
+                        "Error", JOptionPane.ERROR_MESSAGE);
                 System.out.println("Invalid workshop info");
                 this.dispose();
                 new CreateWorkshop(this.user);

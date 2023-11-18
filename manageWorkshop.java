@@ -433,6 +433,8 @@ public class manageWorkshop extends JFrame implements ActionListener {
                             st.setInt(1, id);
                             st.executeUpdate();
                             System.out.println(id + "" + "is deleted from database");
+                            JOptionPane.showMessageDialog(null, "Deleted successfully");
+
                             dispose();
                             new manageWorkshop(user);
                         } catch (Exception e) {
@@ -483,7 +485,7 @@ public class manageWorkshop extends JFrame implements ActionListener {
         // frame design ug properties
         this.setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocation(400, 70);
+        this.setLocation(500, 100);
         this.setTitle("Manage Workshops");
         this.setIconImage(logo.getImage());
         this.setResizable(false);

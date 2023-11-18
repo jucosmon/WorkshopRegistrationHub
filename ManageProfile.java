@@ -386,10 +386,13 @@ public class ManageProfile extends JFrame implements ActionListener {
                     PreparedStatement st = con.prepareStatement("DELETE FROM user WHERE email = ?");
                     st.setString(1, email);
                     st.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Account deleted successfully");
                     System.out.println(email + "" + "is deleted from database");
                     dispose();
                     new Choice();
                 } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Account not deleted",
+                            "Error", JOptionPane.ERROR_MESSAGE);
                     dispose();
                     new ManageProfile(user);
                 }

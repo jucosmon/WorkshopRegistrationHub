@@ -183,7 +183,8 @@ public class Login extends JFrame implements ActionListener {
                     new Homepage(user);
 
                 } else {
-
+                    JOptionPane.showMessageDialog(null, "Email doesn't exist or password does not match.",
+                            "Login unsuccesful", JOptionPane.ERROR_MESSAGE);
                     System.out.println("Invalid");
                     this.dispose();
                     new Login(this.choice, user);

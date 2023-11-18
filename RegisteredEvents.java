@@ -222,11 +222,11 @@ public class RegisteredEvents extends JFrame implements ActionListener {
                             st.setString(2, email);
                             st.executeUpdate();
                             System.out.println(id + "" + "is deleted from database");
-                            JOptionPane.showMessageDialog(null, "Successfully Canceled Event");
+                            JOptionPane.showMessageDialog(null, "Successfully unregister event");
                             dispose();
                             new RegisteredEvents(user);
                         } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, "Cancel unsuccessful");
+                            JOptionPane.showMessageDialog(null, "Unregister unsuccessful");
                             dispose();
                             new RegisteredEvents(user);
                         }
@@ -272,7 +272,7 @@ public class RegisteredEvents extends JFrame implements ActionListener {
         // frame design ug properties
         this.setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocation(400, 70);
+        this.setLocation(500, 100);
         this.setTitle("Registered Events");
         this.setIconImage(logo.getImage());
         this.setResizable(false);

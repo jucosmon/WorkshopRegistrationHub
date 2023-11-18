@@ -260,7 +260,7 @@ public class UpcomingEvents extends JFrame implements ActionListener {
                                 new RegisteredEvents(user);
                             } else { // If duplicate record found
                                 JOptionPane.showMessageDialog(null, "You have already registered for this workshop.",
-                                        "Registration Error", JOptionPane.ERROR_MESSAGE);
+                                        "Registration Invalid", JOptionPane.ERROR_MESSAGE);
                                 dispose();
                                 new UpcomingEvents(user);
                             }
@@ -279,7 +279,7 @@ public class UpcomingEvents extends JFrame implements ActionListener {
         // frame design ug properties
         this.setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocation(400, 70);
+        this.setLocation(500, 100);
         this.setTitle("Upcoming Events");
         this.setIconImage(logo.getImage());
         this.setResizable(false);

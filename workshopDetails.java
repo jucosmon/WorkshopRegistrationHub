@@ -265,7 +265,7 @@ public class workshopDetails extends JFrame implements ActionListener {
 
             }
             attendeesTable = new JFrame();
-            attendeesTable.setLocation(820, 50);
+            attendeesTable.setLocation(900, 150);
             attendeesTable.add(tablePanel);
             attendeesTable.setSize(new Dimension(500, 500));
             attendeesTable.setTitle("List of Attendees");
@@ -299,8 +299,8 @@ public class workshopDetails extends JFrame implements ActionListener {
         // frame design and properties
         this.setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocation(200, 50);
-        this.setTitle("Profile");
+        this.setLocation(250, 150);
+        this.setTitle("Workshop Details");
         this.setIconImage(logo.getImage());
         this.setResizable(false);
         this.getContentPane().setBackground(new Color(68, 93, 72));
@@ -315,8 +315,9 @@ public class workshopDetails extends JFrame implements ActionListener {
             System.out.println("Go Back");
 
             this.dispose();
-            attendeesTable.dispose();
+
             if (user.getChoice().equals("EventManager")) {
+                attendeesTable.dispose();
                 new manageWorkshop(user);
                 System.out.println(user.getChoice());
             } else {

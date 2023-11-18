@@ -95,7 +95,7 @@ public class Menu extends JFrame implements ActionListener {
         // frame design and properties
         this.setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocation(500, 300);
+        this.setLocation(600, 300);
         this.setTitle("Welcome");
         this.setIconImage(logo.getImage());
         this.setResizable(false);

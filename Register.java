@@ -363,6 +363,7 @@ public class Register extends JFrame implements ActionListener {
         char[] repassArray = text_repass.getPassword();
 
         if (e.getSource() == submit) {
+            // checking if correct ang password nga gi reenter
             if (Arrays.equals(pass1Array, repassArray)) {
 
                 String s_gender = cb_gender.getSelectedItem().toString();
@@ -382,6 +383,8 @@ public class Register extends JFrame implements ActionListener {
                 boolean validation = user.databaseInsert();
 
                 if (validation == true) {
+                    JOptionPane.showMessageDialog(null, "Successfully created account. Please log in",
+                            "Account Created", JOptionPane.INFORMATION_MESSAGE);
                     this.dispose();
                     new Login(choice, user);
                 } else {
@@ -389,6 +392,8 @@ public class Register extends JFrame implements ActionListener {
                     new Register(choice);
                 }
             } else {
+                JOptionPane.showMessageDialog(null, "Password does not match",
+                        "Password error", JOptionPane.ERROR_MESSAGE);
                 System.out.println("Password does not match");
                 this.dispose();
                 new Register(choice);
