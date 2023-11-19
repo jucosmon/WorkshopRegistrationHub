@@ -372,32 +372,34 @@ public class ManageProfile extends JFrame implements ActionListener {
 
         });
 
-        // if delete button is selected
         deleteButton.addActionListener(new ActionListener() {
-
             public void actionPerformed(ActionEvent ef) {
                 String email = user.getEmail();
-                try {
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete your account?",
+                        "Confirmation", JOptionPane.YES_NO_OPTION);
 
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost/pfbaliwis", "root",
-                            "");
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    try {
+                        Class.forName("com.mysql.cj.jdbc.Driver");
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost/pfbaliwis", "root", "");
 
-                    PreparedStatement st = con.prepareStatement("DELETE FROM user WHERE email = ?");
-                    st.setString(1, email);
-                    st.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "Account deleted successfully");
-                    System.out.println(email + "" + "is deleted from database");
-                    dispose();
-                    new Choice();
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Account not deleted",
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                    dispose();
-                    new ManageProfile(user);
+                        PreparedStatement st = con.prepareStatement("DELETE FROM user WHERE email = ?");
+                        st.setString(1, email);
+                        st.executeUpdate();
+                        JOptionPane.showMessageDialog(null, "Account deleted successfully");
+                        System.out.println(email + "" + " is deleted from the database");
+                        dispose();
+                        new Choice();
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, "Account not deleted", "Error", JOptionPane.ERROR_MESSAGE);
+                        dispose();
+                        new ManageProfile(user);
+                    }
+                } else {
+                    // Do nothing or provide feedback that deletion was canceled
+                    System.out.println("Deletion canceled");
                 }
             }
-
         });
 
         // frame design and properties
